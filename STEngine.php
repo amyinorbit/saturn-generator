@@ -5,7 +5,7 @@
 ** Created on 2014-08-05 by Cesar Parent <cesar@cesarparent.com>
 */
 
-namespace London;
+namespace Saturn;
 
 define("LONDON_POST", 0);
 define("LONDON_PAGE", 1);
@@ -78,8 +78,9 @@ class Engine
 	public function load_page($page_id)
 	{
 		$filename = __DIR__.self::$pages.$page_id.".md";
-		$page = $this->load($filename);
+		$page = $this->load_file($filename);
 		$page["date"] = filemtime($filename);
+		$page["permalink"] = "/".$page_id;
 		return $page;
 	}
 	

@@ -5,7 +5,7 @@
 ** Created on 2014-08-05 by Cesar Parent <cesar@cesarparent.com>
 */
 
-namespace London;
+namespace Saturn;
 
 require_once(__DIR__."/STEngine.php");
 require_once(__DIR__."/STSatellites.php");
@@ -30,7 +30,7 @@ class Generator
 	{
 		require(__DIR__."/STOptions.php");
 		$this->options = $options;
-		$this->engine = new \London\Engine();
+		$this->engine = new \Saturn\Engine();
 		$this->satellites = [];
 		$this->out = __DIR__."/".$this->options["output_dir"];
 		if(!is_dir($this->out))
@@ -91,10 +91,10 @@ class Generator
 	{
 		$template = "archive";
 		$blog = $this->options;
-		$page = Array(
+		$page = [
 			"title" => $this->options["title"].": archive",
 			"description" => "article's archive published here."
-		);
+		];
 		$entries = $this->entries_list(LONDON_POST);
 		$out = $this->out."/archive";
 		if(!is_dir($out))
@@ -179,10 +179,10 @@ class Generator
 	private function generate_entry($type, array $entry)
 	{
 		$blog = $this->options;
-		$page = Array(
+		$page = [
 			"title" => $blog["title"].": ".$entry["title"],
 			"description" => substr(strip_tags($entry["content"]), 0, 512)
-		);
+		];
 		$template = ($type === LONDON_POST)? "post" : "page";
 		$out = $this->out.$entry["permalink"];
 		if(!is_dir($out))

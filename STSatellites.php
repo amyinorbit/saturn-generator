@@ -30,11 +30,18 @@ function satellite_wordcount($type, array $entry)
 
 function satellite_markdown($type, array $entry)
 {
+	require_once(__DIR__."/libraries/Markdown.php");
+	require_once(__DIR__."/libraries/MarkdownExtra.php");
+	$parser = new \Michelf\MarkdownExtra;
+	$parser->fn_id_prefix = strlen($entry["content"]);
+	$entry["content"] = $parser->transform($entry["content"]);
 	return $entry;
 }
 
 function satellite_smartypants($type, array $entry)
 {
+	require_once(__DIR__."/libraries/SmartyPants.php");
+	$entry["content"]=\Michelf\SmartyPants::defaultTransform($entry["content"]);
 	return $entry;
 }
 
