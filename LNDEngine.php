@@ -10,6 +10,8 @@ namespace London;
 define("LONDON_POST", 0);
 define("LONDON_PAGE", 1);
 
+use \Exception as Exception;
+
 class Engine
 {
 	private $blog;
@@ -62,7 +64,7 @@ class Engine
 			$post["tags"] = [];
 		}
 		$post["lastmod"] = filemtime($filename);
-		$post["permalink"] = $this->blog["url"]."/".$year."/".$month."/".$slug;
+		$post["permalink"] = "/".$year."/".$month."/".$slug;
 		return $post;
 	}
 	
@@ -90,7 +92,7 @@ class Engine
 	private function load_file($filename)
 	{
 		$source = file_get_contents($filename);
-		if($source === false) throw new \Exception("Unable to open ".$filename);
+		if($source === false) throw new Exception("Unable to open ".$filename);
 		list($headers,$content) = explode("\n\n", $source, 2);
 		$post = $this->parse_headers($headers);
 		$post["content"] = $content;
@@ -165,7 +167,7 @@ class Engine
 		}
 		else
 		{
-			throw new \Exception("Invalid entry type.");
+			throw new Exception("Invalid entry type.");
 		}
 		$filename .= $this->slug_from_title($metadata["title"]);
 		if(file_exists($filename.".md"))
@@ -180,7 +182,7 @@ class Engine
 		$raw_data = $this->dump_headers($metadata)."\n".$content;
 		if(!file_put_contents($filename.".md", $raw_data))
 		{
-			throw new \Exception("Error while writing file '".$filename."'.");
+			throw new Exception("Error while writing file '".$filename."'.");
 		}
 	}
 	
