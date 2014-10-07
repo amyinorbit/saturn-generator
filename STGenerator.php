@@ -207,8 +207,7 @@ class Generator
 	private function entries_list($type, $limit = null)
 	{
 		$entries = [];
-		$slugs = $this->engine->slug_list($type,
-			$this->options["maxposts"]);
+		$slugs = $this->engine->slug_list($type, $limit);
 		
 		foreach($slugs as $slug)
 		{

@@ -17,7 +17,7 @@ class Engine
 	private $blog;
 	public static $posts = "/content/posts/";
 	public static $pages = "/content/pages/";
-	
+
 	/**
 	** Contructor. Loads the options file
 	**
@@ -28,13 +28,13 @@ class Engine
 		require(__DIR__."/STOptions.php");
 		$this->blog = $options;
 	}
-	
+
 	/*
 	****************************************************************************
 	** Posts and Pages loading
 	****************************************************************************
 	*/
-	
+
 	/**
 	** Loads a post from an id and returns its content and metadata
 	** in an hash.
@@ -67,7 +67,7 @@ class Engine
 		$post["permalink"] = "/".$year."/".$month."/".$slug;
 		return $post;
 	}
-	
+
 	/**
 	** Loads a static page from an id and returns its content and metadata
 	** in an hash.
@@ -83,7 +83,7 @@ class Engine
 		$page["permalink"] = "/".$page_id;
 		return $page;
 	}
-	
+
 	/**
 	** Loads a post/page file, and parses its basic content to an hash
 	**
@@ -99,13 +99,13 @@ class Engine
 		$post["content"] = $content;
 		return $post;
 	}
-	
+
 	/*
 	****************************************************************************
 	** Posts and Pages writing
 	****************************************************************************
 	*/
-	
+
 	/**
 	** Writes a new post file
 	**
@@ -131,7 +131,7 @@ class Engine
 		}
 		$this->write_file($metadata, $content, LONDON_POST);
 	}
-	
+
 	/**
 	** Writes a new static page file
 	**
@@ -146,7 +146,7 @@ class Engine
 		];
 		$this->write_file($metadata, $content, LONDON_PAGE);
 	}
-	
+
 	/**
 	** Creates a filename and write a post or page file to the disk
 	**
@@ -186,7 +186,7 @@ class Engine
 			throw new Exception("Error while writing file '".$filename."'.");
 		}
 	}
-	
+
 	/**
 	** Converts a title to a lowercase, url-safe string
 	**
@@ -200,14 +200,14 @@ class Engine
 		$slug = preg_replace("/-$|^-/", "", $slug);
 		return $slug;
 	}
-	
-	
+
+
 	/*
 	****************************************************************************
 	** Headers parsing
 	****************************************************************************
 	*/
-	
+
 	/**
 	** Parses a HTTP-like headers string and returns a key/value hash
 	**
@@ -227,7 +227,7 @@ class Engine
 		}
 		return $headers;
 	}
-	
+
 	/**
 	** Dumps a key/value hash as an HTTP-like headers string
 	**
@@ -246,7 +246,7 @@ class Engine
 		}
 		return $headers_string;
 	}
-	
+
 	/**
 	** List entry files of a certain type
 	**
@@ -279,12 +279,11 @@ class Engine
 				pathinfo($filename, PATHINFO_EXTENSION) != "md") {
 				continue;
 			}
-			if($limit !== null && $length++ === $limit) break;
 			$extension = pathinfo($filename, PATHINFO_EXTENSION);
 			$files[] = str_replace(".".$extension, "", $filename);
 		}
 		closedir($dir);
 		rsort($files);
-		return $files;
+		return ($limit === null)? $files : array_splice($files, 0, $limit);
 	}
 }
