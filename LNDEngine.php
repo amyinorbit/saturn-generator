@@ -12,7 +12,7 @@ define("LONDON_PAGE", 1);
 
 class Engine
 {
-	private $blog; // options array
+	private $blog;
 	public static $posts = "/content/posts/";
 	public static $pages = "/content/pages/";
 	
@@ -23,7 +23,7 @@ class Engine
 	*/
 	public function __construct()
 	{
-		require_once(__DIR__."/LNDOptions.php");
+		require(__DIR__."/LNDOptions.php");
 		$this->blog = $options;
 	}
 	
@@ -112,7 +112,7 @@ class Engine
 	** @param int $date optional timestamp for the post. uses time() otherwise.
 	** @return void
 	*/
-	public function add_post($title, $tags, $content, $date = null)
+	public function add_post($title, array $tags, $content, $date = null)
 	{
 		$metadata = [
 			"title" => $title,
@@ -152,7 +152,7 @@ class Engine
 	** @param int $type the post type (LONDON_POST or LONDON_PAGE)
 	** @return void
 	*/
-	private function write_file($metadata, $content, $type)
+	private function write_file(array $metadata, $content, $type)
 	{
 		if($type === LONDON_POST)
 		{
@@ -215,7 +215,6 @@ class Engine
 	{
 		$headers = [];
 		$key = $value = "";
-		
 		foreach(explode(PHP_EOL, $headers_string) as $line)
 		{
 			if (strpos($line,": ") !== false) {
@@ -243,5 +242,46 @@ class Engine
 			}
 		}
 		return $headers_string;
+	}
+	
+	/**
+	** List entry files of a certain type
+	**
+	** @param int $type type of entries to list
+	** @param int $limit optional limit to the size of the list
+	** @return string[] a list of filenames (without extensions)
+	*/
+	public function slug_list($type, $limit = -1) {
+		$files = [];
+		$length = 0;
+		if($type === LONDON_POST)
+		{
+			$path = __DIR__.self::$posts;
+		}
+		else if($type === LONDON_PAGE)
+		{
+			$path = __DIR__.self::$pages;
+		}
+		else
+		{
+			throw new Exception("Invalid entry type");
+		}
+		if(($dir = opendir($path)) === false)
+		{
+			throw new Exception("Error while opening directory ".$dir);
+		}
+		while(($filename = readdir($dir)) !== false)
+		{
+			if($filename{0} == '.' ||
+				pathinfo($filename, PATHINFO_EXTENSION) != "md") {
+				continue;
+			}
+			if($limit !== -1 && $length++ === $limit) break;
+			$extension = pathinfo($filename, PATHINFO_EXTENSION);
+			$files[] = str_replace(".".$extension, "", $filename);
+		}
+		closedir($dir);
+		rsort($files);
+		return $files;
 	}
 }
