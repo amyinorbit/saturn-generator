@@ -77,21 +77,18 @@ class Generator
 		$entries = [];
 		$slugs = $this->engine->slug_list($type,
 			$this->options["maxpost"]);
-		if($type === LONDON_POST)
+		
+		foreach($slugs as $slug)
 		{
-			foreach($slugs as $slug)
+			if($type === LONDON_POST)
 			{
 				$entry = $this->engine->load_post($slug);
-				$entries[] = $this->apply_filters($entry);
 			}
-		}
-		else
-		{
-			foreach($slugs as $slug)
+			else
 			{
 				$entry = $this->engine->load_page($slug);
-				$entries[] = $this->apply_filters($entry);
 			}
+			$entries[] = $this->apply_filters($entry);
 		}
 		return $entries;
 	}
