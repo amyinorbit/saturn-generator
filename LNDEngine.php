@@ -19,7 +19,7 @@ class Engine
 	/**
 	** Contructor. Loads the options file
 	**
-	** @return Engine a new instance of the Engine class
+	** @return \London\Engine a new instance of the Engine class
 	*/
 	public function __construct()
 	{
@@ -251,7 +251,7 @@ class Engine
 	** @param int $limit optional limit to the size of the list
 	** @return string[] a list of filenames (without extensions)
 	*/
-	public function slug_list($type, $limit = -1) {
+	public function slug_list($type, $limit = null) {
 		$files = [];
 		$length = 0;
 		if($type === LONDON_POST)
@@ -276,7 +276,7 @@ class Engine
 				pathinfo($filename, PATHINFO_EXTENSION) != "md") {
 				continue;
 			}
-			if($limit !== -1 && $length++ === $limit) break;
+			if($limit !== null && $length++ === $limit) break;
 			$extension = pathinfo($filename, PATHINFO_EXTENSION);
 			$files[] = str_replace(".".$extension, "", $filename);
 		}
