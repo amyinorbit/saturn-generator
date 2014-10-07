@@ -1,14 +1,14 @@
 <?php
 /*
-** LNDGenerator.php — Generator main logic
-** London — Simple PHP/Markdown blog generator
+** STGenerator.php - Generator main logic
+** Saturn - Simple PHP/Markdown blog generator
 ** Created on 2014-08-05 by Cesar Parent <cesar@cesarparent.com>
 */
 
 namespace London;
 
-require_once(__DIR__."/LNDEngine.php");
-require_once(__DIR__."/LNDsatellites.php");
+require_once(__DIR__."/STEngine.php");
+require_once(__DIR__."/STSatellites.php");
 
 use \Exception as Exception;
 
@@ -28,7 +28,7 @@ class Generator
 	*/
 	public function __construct()
 	{
-		require(__DIR__."/LNDOptions.php");
+		require(__DIR__."/STOptions.php");
 		$this->options = $options;
 		$this->engine = new \London\Engine();
 		$this->satellites = [];

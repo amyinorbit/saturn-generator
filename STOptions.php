@@ -1,7 +1,7 @@
 <?php
 /*
-** LNDOptions.php — Generator Options
-** London — Simple PHP/Markdown blog generator
+** STOptions.php - Generator Options
+** Saturn - Simple PHP/Markdown blog generator
 ** Created on 2014-08-05 by Cesar Parent <cesar@cesarparent.com>
 */
 

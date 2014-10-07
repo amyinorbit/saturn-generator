@@ -1,7 +1,7 @@
 <?php
 /*
-** LNDEngine.php — Generator utility class (File handling)
-** London — Simple PHP/Markdown blog generator
+** STEngine.php — Generator utility class (File handling)
+** Saturn — Simple PHP/Markdown blog generator
 ** Created on 2014-08-05 by Cesar Parent <cesar@cesarparent.com>
 */
 
@@ -25,7 +25,7 @@ class Engine
 	*/
 	public function __construct()
 	{
-		require(__DIR__."/LNDOptions.php");
+		require(__DIR__."/STOptions.php");
 		$this->blog = $options;
 	}
 	
