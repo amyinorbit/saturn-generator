@@ -1,3 +1,3 @@
-# London Engine
+# Saturn Blog Generator
 
-_Simple PHP/Markdown static blog generator_
+_A simple PHP/Markdown static blog generator_

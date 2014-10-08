@@ -15,9 +15,9 @@ use \Exception as Exception;
 class Generator
 {
 	private $engine;
-	private $options;
 	private $satellites;
-	private $out;
+	public $out;
+	public $options;
 	public static $templates = "/templates/";
 	
 	/**
@@ -41,6 +41,7 @@ class Generator
 		$this->register_satellite("satellite_smartypants");
 		$this->register_satellite("satellite_wordcount");
 		$this->register_satellite("satellite_sitemap");
+		date_default_timezone_set($this->options["timezone"]);
 	}
 	
 	/**
@@ -225,9 +226,9 @@ class Generator
 	}
 	
 	/**
-	** Add a satellite to be applied to posts while processing. satellite should take
-	** An entry aray as their only parameter, and return a modified
-	** entry array
+	** Add a satellite to be applied to posts while processing.
+	** satellites should take the entry type and hash as their only parameters,
+	** and return a modified entry hash
 	**
 	** @param callable $satellite takes an entry array and modifies it
 	** @return void
@@ -235,6 +236,17 @@ class Generator
 	public function register_satellite(callable $satellite)
 	{
 		array_push($this->satellites, $satellite);
+	}
+	
+	/**
+	** Returns a list of add-on satellites (default satellites are not
+	** included)
+	**
+	** @return string[] a list of registered satellites
+	*/
+	public function list_satellites()
+	{
+		return $this->satellites;
 	}
 	
 	/**
