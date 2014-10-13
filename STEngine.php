@@ -40,12 +40,13 @@ class Engine
 	** in an hash.
 	**
 	** @param string $post_id the slug of the post to load
-	** @return hash $post the loaded post.
+	** @return hash post if the post exists, false otherwise.
 	*/
 	public function load_post($post_id)
 	{
 		$filename = __DIR__.self::$posts.$post_id.".md";
 		$post = $this->load_file($filename);
+		if(!$post) return false;
 		list($year, $month, $day, $slug) = explode("-", $post_id, 4);
 		if(isset($post["date"]))
 		{
@@ -73,12 +74,13 @@ class Engine
 	** in an hash.
 	**
 	** @param string $page_id the slug of the page to load
-	** @return hash $page the loaded page.
+	** @return hash page if the page exists, false otherwise
 	*/
 	public function load_page($page_id)
 	{
 		$filename = __DIR__.self::$pages.$page_id.".md";
 		$page = $this->load_file($filename);
+		if(!$page) return false;
 		$page["date"] = filemtime($filename);
 		$page["permalink"] = "/".$page_id;
 		return $page;
@@ -88,12 +90,12 @@ class Engine
 	** Loads a post/page file, and parses its basic content to an hash
 	**
 	** @param string $filename the path to the file to open
-	** @return hash an array containing the parsed content and the metadata.
+	** @return hash an array if the entry exists, false otherwise
 	*/
 	private function load_file($filename)
 	{
 		$source = file_get_contents($filename);
-		if($source === false) throw new Exception("Unable to open ".$filename);
+		if($source === false) return false;
 		list($headers,$content) = explode("\n\n", $source, 2);
 		$post = $this->parse_headers($headers);
 		$post["content"] = $content;

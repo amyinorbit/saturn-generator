@@ -7,7 +7,6 @@
 
 require_once(__DIR__."/STGenerator.php");
 use \Saturn\Generator as Generator;
-header("Content-Type: text/plain");
 $saturn = new Generator;
 $satellites = $saturn->list_satellites();
 
