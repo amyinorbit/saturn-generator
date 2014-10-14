@@ -14,7 +14,7 @@ use \Exception as Exception;
 
 class Engine
 {
-	private $blog;
+	public $blog;
 	public static $posts = "/content/posts/";
 	public static $pages = "/content/pages/";
 
@@ -94,8 +94,9 @@ class Engine
 	*/
 	private function load_file($filename)
 	{
+		if(!file_exists($filename)) return false;
 		$source = file_get_contents($filename);
-		if($source === false) return false;
+		if(!$source) throw new Exception("Error reading ".$filename);
 		list($headers,$content) = explode("\n\n", $source, 2);
 		$post = $this->parse_headers($headers);
 		$post["content"] = $content;
@@ -115,7 +116,7 @@ class Engine
 	** @param string[] $tags an array of tags for the psot
 	** @param string $content the content of the post
 	** @param int $date optional timestamp for the post. uses time() otherwise.
-	** @return void
+	** @return string the unique id of the created post
 	*/
 	public function add_post($title, array $tags, $content, $date = null)
 	{
@@ -131,7 +132,7 @@ class Engine
 		{
 			$metadata["date"] = $date;
 		}
-		$this->write_file($metadata, $content, LONDON_POST);
+		return $this->write_file($metadata, $content, LONDON_POST);
 	}
 
 	/**
@@ -139,14 +140,14 @@ class Engine
 	**
 	** @param string $title the title of the static page
 	** @param string $content the content of the static page
-	** @return void
+	** @return string the unique id of the created page
 	*/
 	public function add_page($title, $content)
 	{
 		$metadata = [
 			"title" => $title,
 		];
-		$this->write_file($metadata, $content, LONDON_PAGE);
+		return $this->write_file($metadata, $content, LONDON_PAGE);
 	}
 
 	/**
@@ -161,32 +162,33 @@ class Engine
 	{
 		if($type === LONDON_POST)
 		{
-			$filename = __DIR__.self::$posts.date("Y-m-d-", $metadata["date"]);
+			$filename = date("Y-m-d-", $metadata["date"]);
 			$metadata["date"] = date("Y-m-d H:i:s", $metadata["date"]);
 		}
 		else if($type === LONDON_PAGE)
 		{
-			$filename = __DIR__.self::$pages;
+			$filename = "";
 		}
 		else
 		{
 			throw new Exception("Invalid entry type.");
 		}
 		$filename .= $this->slug_from_title($metadata["title"]);
-		if(file_exists($filename.".md"))
+		if(file_exists(__DIR__.self::$posts.$filename.".md"))
 		{
 			$suffix = 2;
-			while(file_exists($filename."-".$suffix.".md"))
+			while(file_exists(__DIR__.self::$posts.$filename."-".$suffix.".md"))
 			{
 				$suffix++;
 			}
 			$filename = $filename."-".$suffix;
 		}
 		$raw_data = $this->dump_headers($metadata)."\n".$content;
-		if(!file_put_contents($filename.".md", $raw_data))
+		if(!file_put_contents(__DIR__.self::$posts.$filename.".md", $raw_data))
 		{
 			throw new Exception("Error while writing file '".$filename."'.");
 		}
+		return $filename;
 	}
 
 	/**
@@ -202,7 +204,28 @@ class Engine
 		$slug = preg_replace("/-$|^-/", "", $slug);
 		return $slug;
 	}
-
+	
+	/**
+	** Deletes a post or page source file
+	**
+	** @param int $type the type (LONDON_POST|LONDON_PAGE) of the entry
+	** @param string $id the unique ID of the entry
+	** @return boolean true if the post was deleted, false otherwise
+	*/
+	public function delete_entry($type, $id)
+	{
+		if($type === LONDON_POST)
+		{
+			$filename = __DIR__.self::$posts.$id.".md";
+		}
+		else if($type === LONDON_PAGE)
+		{
+			$filename = __DIR__.self::$pages.$id.".md";
+		}
+		if(!file_exists($filename)) return false;
+		if(!unlink($filename)) throw new Exception("Error deleting ".$filename);
+		return true;
+	}
 
 	/*
 	****************************************************************************
