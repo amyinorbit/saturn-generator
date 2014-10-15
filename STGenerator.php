@@ -1,8 +1,14 @@
 <?php
-/*
+/**
 ** STGenerator.php - Generator main logic
 ** Saturn - Simple PHP/Markdown blog generator
 ** Created on 2014-08-05 by Cesar Parent <cesar@cesarparent.com>
+**
+** @package Saturn
+** @author Cesar Parent <cesar@cesarparent.com>
+** @copyright Copyright (c) 2014, Cesar Parent
+** @version 1.0-alpha1
+** @license https://github.com/cesarparent/saturn-generator/blob/master/LICENSE MIT License
 */
 
 namespace Saturn;
@@ -19,7 +25,7 @@ class Generator
 	public $out;
 	public $options;
 	public static $templates = "/templates/";
-	
+
 	/**
 	** Constructor. Loads the options, creates an Engine instance, and
 	** registers the default satellites
@@ -43,7 +49,7 @@ class Generator
 		$this->register_satellite("satellite_sitemap");
 		date_default_timezone_set($this->options["timezone"]);
 	}
-	
+
 	/**
 	** Build the home page and dumps its html in the output folder
 	**
@@ -51,7 +57,7 @@ class Generator
 	*/
 	public function generate_home()
 	{
-		$entries = $this->entries_list(LONDON_POST,$this->options["maxposts"]);
+		$entries = $this->entries_list(SATURN_POST,$this->options["maxposts"]);
 		$blog = $this->options;
 		$template = "home";
 		$page = [
@@ -65,7 +71,7 @@ class Generator
 			throw new Exception("Error writing to '".$this->out."/index.html'.");
 		}
 	}
-	
+
 	/**
 	** Build every posts page and dump their html in the output folder
 	**
@@ -73,16 +79,16 @@ class Generator
 	*/
 	public function generate_entries()
 	{
-		$posts = $this->entries_list(LONDON_POST);
-		$pages = $this->entries_list(LONDON_PAGE);
+		$posts = $this->entries_list(SATURN_POST);
+		$pages = $this->entries_list(SATURN_PAGE);
 		foreach ($posts as $post) {
-			$this->generate_entry(LONDON_POST, $post);
+			$this->generate_entry(SATURN_POST, $post);
 		}
 		foreach ($pages as $page) {
-			$this->generate_entry(LONDON_PAGE, $page);
+			$this->generate_entry(SATURN_PAGE, $page);
 		}
 	}
-	
+
 	/**
 	** write the posts archive html page to the disk
 	**
@@ -96,7 +102,7 @@ class Generator
 			"title" => $this->options["title"].": archive",
 			"description" => "article's archive published here."
 		];
-		$entries = $this->entries_list(LONDON_POST);
+		$entries = $this->entries_list(SATURN_POST);
 		$out = $this->out."/archive";
 		if(!is_dir($out))
 		{
@@ -109,7 +115,7 @@ class Generator
 			throw new Exception("Error writing to '".$out."/index.html'.");
 		}
 	}
-	
+
 	/**
 	** write the blog's rss file to the disk
 	**
@@ -118,7 +124,7 @@ class Generator
 	public function generate_rss()
 	{
 		$blog = $this->options;
-		$entries = $this->entries_list(LONDON_POST,$this->options["maxposts"]);
+		$entries = $this->entries_list(SATURN_POST,$this->options["maxposts"]);
 		ob_start();
 		require(__DIR__.self::$templates."rss.php");
 		$output = ob_get_clean();
@@ -126,7 +132,7 @@ class Generator
 			throw new Exception("Error writing to '".$this->out."/rss.xml'.");
 		}
 	}
-	
+
 	/**
 	** write the blog's sitemap to the disk
 	**
@@ -135,8 +141,8 @@ class Generator
 	public function generate_sitemap()
 	{
 		$blog = $this->options;
-		$posts = $this->entries_list(LONDON_POST);
-		$pages = $this->entries_list(LONDON_PAGE);
+		$posts = $this->entries_list(SATURN_POST);
+		$pages = $this->entries_list(SATURN_PAGE);
 		ob_start();
 		echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 		require(__DIR__.self::$templates."sitemap-template.php");
@@ -145,7 +151,7 @@ class Generator
 			throw new Exception("Error writing to ".$this->out."/sitemap.xml.");
 		}
 	}
-	
+
 	/**
 	** generate a JSON search index with all the posts
 	**
@@ -153,7 +159,7 @@ class Generator
 	*/
 	public function generate_search_index()
 	{
-		$posts = $this->entries_list(LONDON_POST);
+		$posts = $this->entries_list(SATURN_POST);
 		$index = [];
 		foreach($posts as $post)
 		{
@@ -170,11 +176,11 @@ class Generator
 			throw new Exception("Error writing to ".$this->out."/search.json.");
 		}
 	}
-	
+
 	/**
 	** Writes a single entry's html page to the disk
 	**
-	** @param int $type the type (LONDON_PAGE|LONDON_POST) to write;
+	** @param int $type the type (SATURN_PAGE|SATURN_POST) to write;
 	** @param hash $entry the entry array
 	*/
 	private function generate_entry($type, array $entry)
@@ -184,7 +190,7 @@ class Generator
 			"title" => $blog["title"].": ".$entry["title"],
 			"description" => substr(strip_tags($entry["content"]), 0, 512)
 		];
-		$template = ($type === LONDON_POST)? "post" : "page";
+		$template = ($type === SATURN_POST)? "post" : "page";
 		$out = $this->out.$entry["permalink"];
 		if(!is_dir($out))
 		{
@@ -197,11 +203,11 @@ class Generator
 			throw new Exception("Error writing to '".$out."/index.html'.");
 		}
 	}
-	
+
 	/**
 	** Returns an array of posts, ran through every satellites
 	**
-	** @param int $type the type (LONDON_PAGE|LONDON_POST) of entries
+	** @param int $type the type (SATURN_PAGE|SATURN_POST) of entries
 	** @param int $limit the optional limit of entries to return
 	** @return hash[] an list of entry arrays
 	*/
@@ -209,10 +215,10 @@ class Generator
 	{
 		$entries = [];
 		$slugs = $this->engine->slug_list($type, $limit);
-		
+
 		foreach($slugs as $slug)
 		{
-			if($type === LONDON_POST)
+			if($type === SATURN_POST)
 			{
 				$entry = $this->engine->load_post($slug);
 			}
@@ -224,7 +230,7 @@ class Generator
 		}
 		return $entries;
 	}
-	
+
 	/**
 	** Add a satellite to be applied to posts while processing.
 	** satellites should take the entry type and hash as their only parameters,
@@ -237,7 +243,7 @@ class Generator
 	{
 		array_push($this->satellites, $satellite);
 	}
-	
+
 	/**
 	** Returns a list of add-on satellites (default satellites are not
 	** included)
@@ -248,11 +254,11 @@ class Generator
 	{
 		return $this->satellites;
 	}
-	
+
 	/**
 	** Applies all registered satellites to an entry and returns it
 	**
-	** @param int $type the type (LONDON_PAGE|LONDON_POST) of entries
+	** @param int $type the type (SATURN_PAGE|SATURN_POST) of entries
 	** @param hash $entry the entry hash
 	** @return hash the satelliteed entry
 	*/
@@ -265,5 +271,3 @@ class Generator
 		return $entry;
 	}
 }
-
-

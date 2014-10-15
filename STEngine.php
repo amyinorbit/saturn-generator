@@ -1,14 +1,20 @@
 <?php
-/*
-** STEngine.php — Generator utility class (File handling)
+/**
+** STEngine.php — Saturn utility class (File handling)
 ** Saturn — Simple PHP/Markdown blog generator
 ** Created on 2014-08-05 by Cesar Parent <cesar@cesarparent.com>
+**
+** @package Saturn
+** @author Cesar Parent <cesar@cesarparent.com>
+** @copyright Copyright (c) 2014, Cesar Parent
+** @version 1.0-alpha1
+** @license https://github.com/cesarparent/saturn-generator/blob/master/LICENSE MIT License
 */
 
 namespace Saturn;
 
-define("LONDON_POST", 0);
-define("LONDON_PAGE", 1);
+define("SATURN_POST", 0);
+define("SATURN_PAGE", 1);
 
 use \Exception as Exception;
 
@@ -133,7 +139,7 @@ class Engine
 		{
 			$metadata["date"] = $date;
 		}
-		return $this->write_file($metadata, $content, LONDON_POST);
+		return $this->write_file($metadata, $content, SATURN_POST);
 	}
 
 	/**
@@ -148,7 +154,7 @@ class Engine
 		$metadata = [
 			"title" => $title,
 		];
-		return $this->write_file($metadata, $content, LONDON_PAGE);
+		return $this->write_file($metadata, $content, SATURN_PAGE);
 	}
 
 	/**
@@ -156,17 +162,17 @@ class Engine
 	**
 	** @param hash $metadata the metadata array for the entry
 	** @param string $content the content of the entry
-	** @param int $type the post type (LONDON_POST or LONDON_PAGE)
+	** @param int $type the post type (SATURN_POST or SATURN_PAGE)
 	** @return void
 	*/
 	private function write_file(array $metadata, $content, $type)
 	{
-		if($type === LONDON_POST)
+		if($type === SATURN_POST)
 		{
 			$filename = date("Y-m-d-", $metadata["date"]);
 			$metadata["date"] = date("Y-m-d H:i:s", $metadata["date"]);
 		}
-		else if($type === LONDON_PAGE)
+		else if($type === SATURN_PAGE)
 		{
 			$filename = "";
 		}
@@ -209,17 +215,17 @@ class Engine
 	/**
 	** Deletes a post or page source file
 	**
-	** @param int $type the type (LONDON_POST|LONDON_PAGE) of the entry
+	** @param int $type the type (SATURN_POST|SATURN_PAGE) of the entry
 	** @param string $id the unique ID of the entry
 	** @return boolean true if the post was deleted, false otherwise
 	*/
 	public function delete_entry($type, $id)
 	{
-		if($type === LONDON_POST)
+		if($type === SATURN_POST)
 		{
 			$filename = __DIR__.self::$posts.$id.".md";
 		}
-		else if($type === LONDON_PAGE)
+		else if($type === SATURN_PAGE)
 		{
 			$filename = __DIR__.self::$pages.$id.".md";
 		}
@@ -283,11 +289,11 @@ class Engine
 	public function slug_list($type, $limit = null) {
 		$files = [];
 		$length = 0;
-		if($type === LONDON_POST)
+		if($type === SATURN_POST)
 		{
 			$path = __DIR__.self::$posts;
 		}
-		else if($type === LONDON_PAGE)
+		else if($type === SATURN_PAGE)
 		{
 			$path = __DIR__.self::$pages;
 		}
