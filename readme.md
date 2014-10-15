@@ -3,7 +3,7 @@
 Version 1.0-alpha1 - Oct. 15th, 2014  
 by César Parent \[<http://cesarparent.com>\]
 
-_A lightweight Markdown/static blog generator written in PHP. _
+_A lightweight Markdown/static blog generator written in PHP._
 
 ## Why Saturn
 
@@ -23,7 +23,7 @@ Posts and static pages are simple `.md` plain text files, located in `/content/p
 
 A simple post would look like this:
 
-~~~~txt
+~~~~no-highlight
 title: Some great title
 [tags: comma, separated, tags]
 [date: yyyy-mm-dd hh:mm:ss]
