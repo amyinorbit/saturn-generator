@@ -17,6 +17,7 @@ class Engine
 	public $blog;
 	public static $posts = "/content/posts/";
 	public static $pages = "/content/pages/";
+	public $version = "1.0.0a1";
 
 	/**
 	** Contructor. Loads the options file
@@ -56,7 +57,7 @@ class Engine
 		{
 			$post["date"] = mktime("10", "00", "00", $month, $day, $year);
 		}
-		if(isset($post["tags"]))
+		if(isset($post["tags"]) && $post["tags"] !== "")
 		{
 			$post["tags"] = preg_split("/[ *]?,[ *]?/", $post["tags"]);
 		}
@@ -204,7 +205,7 @@ class Engine
 		$slug = preg_replace("/-$|^-/", "", $slug);
 		return $slug;
 	}
-	
+
 	/**
 	** Deletes a post or page source file
 	**
