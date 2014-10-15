@@ -37,7 +37,7 @@ Some [Markdown](http://daringfireball.net/projects/markdown) content;
 
 Saturn allows you to create _satellites_ (filters) through which posts and pages will be ran at generation time. Some default satellites are provided to make Saturn work (SmartyPants and Markdown for example);
 
-A satellite must take `(int $type, $array $entry)` as parameters. `$type` will be either `SATURN_PAGE` or `SATURN_POST`. `$entry` will be a hash/array containing, at least, the following keys, along with any keys added in the post header:
+A satellite must take `(int $type, array $entry)` as parameters. `$type` will be either `SATURN_PAGE` or `SATURN_POST`. `$entry` will be a hash/array containing, at least, the following keys, along with any keys added in the post header:
 
 ~~~~php
 $entry = [
