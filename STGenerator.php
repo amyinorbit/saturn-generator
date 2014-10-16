@@ -266,7 +266,7 @@ class Generator
 	{
 		foreach($this->satellites as $satellite)
 		{
-			$entry = $satellite($type, $entry);
+			$entry = call_user_func($satellite, $type, $entry);
 		}
 		return $entry;
 	}

@@ -158,6 +158,42 @@ class Engine
 	}
 
 	/**
+	** Replace the data of the given post with the passed hash
+	**
+	** @param int $type the post type (SATURN_POST or SATURN_PAGE)
+	** @param string $slug the slug of the entry to replace
+	** @param hash $entry the entry's new content and metadata
+	** @return void
+	*/
+	public function edit_entry($type, $slug, array $entry)
+	{
+		if($type === SATURN_POST)
+		{
+			$filename = __DIR__.self::$posts.$slug.".md";
+			$entry["date"] = date("Y-m-d H:i:s", $entry["date"]);
+		}
+		else if($type === SATURN_PAGE)
+		{
+			$filename = __DIR__.self::$pages.$slug.".md";
+		}
+		else
+		{
+			throw new Exception("Invalid entry type");
+		}
+		$content = $entry["content"];
+		unset($entry["lastmod"]);
+		unset($entry["content"]);
+		unset($entry["permalink"]);
+
+		$raw_data = $this->dump_headers($entry)."\n".$content;
+		if(!file_put_contents($filename, $raw_data))
+		{
+			throw new Exception("Error while writing file '".$filename."'.");
+		}
+		return $filename;
+	}
+
+	/**
 	** Creates a filename and write a post or page file to the disk
 	**
 	** @param hash $metadata the metadata array for the entry
