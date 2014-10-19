@@ -1,15 +1,15 @@
 <?php
 /**
-** STEngine.php — Saturn utility class (File handling)
-** Saturn — Simple PHP/Markdown blog generator
-** Created on 2014-08-05 by Cesar Parent <cesar@cesarparent.com>
-**
-** @package Saturn
-** @author Cesar Parent <cesar@cesarparent.com>
-** @copyright Copyright (c) 2014, Cesar Parent
-** @version 1.0-alpha1
-** @license https://github.com/cesarparent/saturn-generator/blob/master/LICENSE MIT License
-*/
+ * STEngine.php — Saturn utility class (File handling)
+ * Saturn — Simple PHP/Markdown blog generator
+ * Created on 2014-08-05 by Cesar Parent <cesar@cesarparent.com>
+ *
+ * @package Saturn
+ * @author Cesar Parent <cesar@cesarparent.com>
+ * @copyright Copyright (c) 2014, Cesar Parent
+ * @version 1.0-alpha1
+ * @license https://github.com/cesarparent/saturn-generator/blob/master/LICENSE MIT License
+ */
 
 namespace Saturn;
 
@@ -18,18 +18,34 @@ define("SATURN_PAGE", 1);
 
 use \Exception as Exception;
 
+/**
+ * Saturn engine class. provides abstraction methods to access posts and pages
+ * stored on the blog
+ */
 class Engine
 {
+	/**
+	 * @var mixed[] $blog the options of the blog
+	 */
 	public $blog;
+	/**
+	 * @var string $posts the directory in which posts are stored
+	 */
 	public static $posts = "/content/posts/";
+	/**
+	 * @var string $pages the directory in which posts are stored
+	 */
 	public static $pages = "/content/pages/";
+	/**
+	 * @var string $version Saturn's version number
+	 */
 	public $version = "1.0.0a1";
 
 	/**
-	** Contructor. Loads the options file
-	**
-	** @return \London\Engine a new instance of the Engine class
-	*/
+	 * Contructor. Loads the options file
+	 *
+	 * @return Engine a new instance of the Engine class
+	 */
 	public function __construct()
 	{
 		require(__DIR__."/STOptions.php");
@@ -37,18 +53,18 @@ class Engine
 	}
 
 	/*
-	****************************************************************************
-	** Posts and Pages loading
-	****************************************************************************
-	*/
+	 ***************************************************************************
+	 * Posts and Pages loading
+	 ***************************************************************************
+	 */
 
 	/**
-	** Loads a post from an id and returns its content and metadata
-	** in an hash.
-	**
-	** @param string $post_id the slug of the post to load
-	** @return hash post if the post exists, false otherwise.
-	*/
+	 * Loads a post from an id and returns its content and metadata
+	 * in an array.
+	 *
+	 * @param string $post_id the slug of the post to load
+	 * @return mixed[]|false post if the post exists, false otherwise.
+	 */
 	public function load_post($post_id)
 	{
 		$filename = __DIR__.self::$posts.$post_id.".md";
@@ -77,12 +93,12 @@ class Engine
 	}
 
 	/**
-	** Loads a static page from an id and returns its content and metadata
-	** in an hash.
-	**
-	** @param string $page_id the slug of the page to load
-	** @return hash page if the page exists, false otherwise
-	*/
+	 * Loads a static page from an id and returns its content and metadata
+	 * in an array.
+	 *
+	 * @param string $page_id the slug of the page to load
+	 * @return mixed[]|false page if the page exists, false otherwise
+	 */
 	public function load_page($page_id)
 	{
 		$filename = __DIR__.self::$pages.$page_id.".md";
@@ -94,11 +110,11 @@ class Engine
 	}
 
 	/**
-	** Loads a post/page file, and parses its basic content to an hash
-	**
-	** @param string $filename the path to the file to open
-	** @return hash an array if the entry exists, false otherwise
-	*/
+	 * Loads a post/page file, and parses its basic content to an array
+	 *
+	 * @param string $filename the path to the file to open
+	 * @return mixed[]|false an array if the entry exists, false otherwise
+	 */
 	private function load_file($filename)
 	{
 		if(!file_exists($filename)) return false;
@@ -111,20 +127,20 @@ class Engine
 	}
 
 	/*
-	****************************************************************************
-	** Posts and Pages writing
-	****************************************************************************
-	*/
+	 ***************************************************************************
+	 * Posts and Pages writing
+	 ***************************************************************************
+	 */
 
 	/**
-	** Writes a new post file
-	**
-	** @param string $title the title of the post
-	** @param string[] $tags an array of tags for the psot
-	** @param string $content the content of the post
-	** @param int $date optional timestamp for the post. uses time() otherwise.
-	** @return string the unique id of the created post
-	*/
+	 * Writes a new post file
+	 *
+	 * @param string $title the title of the post
+	 * @param string[] $tags an array of tags for the psot
+	 * @param string $content the content of the post
+	 * @param int $date optional timestamp for the post. uses time() otherwise.
+	 * @return string the unique id of the created post
+	 */
 	public function add_post($title, array $tags, $content, $date = null)
 	{
 		$metadata = [
@@ -143,12 +159,12 @@ class Engine
 	}
 
 	/**
-	** Writes a new static page file
-	**
-	** @param string $title the title of the static page
-	** @param string $content the content of the static page
-	** @return string the unique id of the created page
-	*/
+	 * Writes a new static page file
+	 *
+	 * @param string $title the title of the static page
+	 * @param string $content the content of the static page
+	 * @return string the unique id of the created page
+	 */
 	public function add_page($title, $content)
 	{
 		$metadata = [
@@ -158,13 +174,13 @@ class Engine
 	}
 
 	/**
-	** Replace the data of the given post with the passed hash
-	**
-	** @param int $type the post type (SATURN_POST or SATURN_PAGE)
-	** @param string $slug the slug of the entry to replace
-	** @param hash $entry the entry's new content and metadata
-	** @return void
-	*/
+	 * Replace the data of the given post with the passed array
+	 *
+	 * @param int $type the post type (SATURN_POST or SATURN_PAGE)
+	 * @param string $slug the slug of the entry to replace
+	 * @param mixed[] $entry the entry's new content and metadata
+	 * @return void
+	 */
 	public function edit_entry($type, $slug, array $entry)
 	{
 		if($type === SATURN_POST)
@@ -194,13 +210,13 @@ class Engine
 	}
 
 	/**
-	** Creates a filename and write a post or page file to the disk
-	**
-	** @param hash $metadata the metadata array for the entry
-	** @param string $content the content of the entry
-	** @param int $type the post type (SATURN_POST or SATURN_PAGE)
-	** @return void
-	*/
+	 * Creates a filename and write a post or page file to the disk
+	 *
+	 * @param mixed[] $metadata the metadata array for the entry
+	 * @param string $content the content of the entry
+	 * @param int $type the post type (SATURN_POST or SATURN_PAGE)
+	 * @return void
+	 */
 	private function write_file(array $metadata, $content, $type)
 	{
 		if($type === SATURN_POST)
@@ -235,11 +251,11 @@ class Engine
 	}
 
 	/**
-	** Converts a title to a lowercase, url-safe string
-	**
-	** @param string $title the title to convert
-	** @return string a url-safe slug to use in filenames
-	*/
+	 * Converts a title to a lowercase, url-safe string
+	 *
+	 * @param string $title the title to convert
+	 * @return string a url-safe slug to use in filenames
+	 */
 	private function slug_from_title($title)
 	{
 		$slug = strtolower($title);
@@ -249,12 +265,12 @@ class Engine
 	}
 
 	/**
-	** Deletes a post or page source file
-	**
-	** @param int $type the type (SATURN_POST|SATURN_PAGE) of the entry
-	** @param string $id the unique ID of the entry
-	** @return boolean true if the post was deleted, false otherwise
-	*/
+	 * Deletes a post or page source file
+	 *
+	 * @param int $type the type (SATURN_POST|SATURN_PAGE) of the entry
+	 * @param string $id the unique ID of the entry
+	 * @return boolean true if the post was deleted, false otherwise
+	 */
 	public function delete_entry($type, $id)
 	{
 		if($type === SATURN_POST)
@@ -271,17 +287,17 @@ class Engine
 	}
 
 	/*
-	****************************************************************************
-	** Headers parsing
-	****************************************************************************
-	*/
+	 ***************************************************************************
+	 * Headers parsing
+	 ***************************************************************************
+	 */
 
 	/**
-	** Parses a HTTP-like headers string and returns a key/value hash
-	**
-	** @param string $headers_string the headers
-	** @return hash the keys and values contained in the headers
-	*/
+	 * Parses a HTTP-like headers string and returns a key/value array
+	 *
+	 * @param string $headers_string the headers
+	 * @return mixed[] the keys and values contained in the headers
+	 */
 	private function parse_headers($headers_string)
 	{
 		$headers = [];
@@ -297,11 +313,11 @@ class Engine
 	}
 
 	/**
-	** Dumps a key/value hash as an HTTP-like headers string
-	**
-	** @param hash $headers the array to dump
-	** @return string the string representation of the headers
-	*/
+	 * Dumps a key/value array as an HTTP-like headers string
+	 *
+	 * @param mixed[] $headers the array to dump
+	 * @return string the string representation of the headers
+	 */
 	private function dump_headers(Array $headers)
 	{
 		$headers_string = "";
@@ -316,12 +332,12 @@ class Engine
 	}
 
 	/**
-	** List entry files of a certain type
-	**
-	** @param int $type type of entries to list
-	** @param int $limit optional limit to the size of the list
-	** @return string[] a list of filenames (without extensions)
-	*/
+	 * List entry files of a certain type
+	 *
+	 * @param int $type type of entries to list
+	 * @param int $limit optional limit to the size of the list
+	 * @return string[] a list of filenames (without extensions)
+	 */
 	public function slug_list($type, $limit = null) {
 		$files = [];
 		$length = 0;

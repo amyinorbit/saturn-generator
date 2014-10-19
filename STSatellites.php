@@ -1,30 +1,30 @@
 <?php
 /**
-** LNDsatellites.php - Entry satellites
-** London - Simple PHP/Markdown blog generator
-** Created on 2014-08-07 by Cesar Parent <cesar@cesarparent.com>
-**
-** This file contains the satellites that posts are passed through before
-** being output to the blog
-**
-** satellites take the entry array and type as parameters, and should return
-** a valid entry array
-**
-** Only satellites registered with `Generator->register_satellite()` are executed
-** at generation time
-**
-** @package Saturn
-** @author Cesar Parent <cesar@cesarparent.com>
-** @copyright Copyright (c) 2014, Cesar Parent
-** @version 1.0-alpha1
-** @license https://github.com/cesarparent/saturn-generator/blob/master/LICENSE MIT License
+ * LNDsatellites.php - Entry satellites
+ * London - Simple PHP/Markdown blog generator
+ * Created on 2014-08-07 by Cesar Parent <cesar@cesarparent.com>
+ *
+ * This file contains the satellites that posts are passed through before
+ * being output to the blog
+ *
+ * satellites take the entry array and type as parameters, and should return
+ * a valid entry array
+ *
+ * Only satellites registered with `Generator->register_satellite()` are executed
+ * at generation time
+ *
+ * @package Saturn
+ * @author Cesar Parent <cesar@cesarparent.com>
+ * @copyright Copyright (c) 2014, Cesar Parent
+ * @version 1.0-alpha1
+ * @license https://github.com/cesarparent/saturn-generator/blob/master/LICENSE MIT License
 */
 
 /*
-********************************************************************************
-** Default satellites - Markdown, SmartyPants, wordcount/readingtime
-********************************************************************************
-*/
+ ***************************************************************************** *
+ * Default satellites - Markdown, SmartyPants, wordcount/readingtime
+ ***************************************************************************** *
+ */
 
 function satellite_wordcount($type, array $entry)
 {

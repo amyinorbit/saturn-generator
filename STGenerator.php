@@ -1,14 +1,14 @@
 <?php
 /**
-** STGenerator.php - Generator main logic
-** Saturn - Simple PHP/Markdown blog generator
-** Created on 2014-08-05 by Cesar Parent <cesar@cesarparent.com>
-**
-** @package Saturn
-** @author Cesar Parent <cesar@cesarparent.com>
-** @copyright Copyright (c) 2014, Cesar Parent
-** @version 1.0-alpha1
-** @license https://github.com/cesarparent/saturn-generator/blob/master/LICENSE MIT License
+ * STGenerator.php - Generator main logic
+ * Saturn - Simple PHP/Markdown blog generator
+ * Created on 2014-08-05 by Cesar Parent <cesar@cesarparent.com>
+ *
+ * @package Saturn
+ * @author Cesar Parent <cesar@cesarparent.com>
+ * @copyright Copyright (c) 2014, Cesar Parent
+ * @version 1.0-alpha1
+ * @license https://github.com/cesarparent/saturn-generator/blob/master/LICENSE MIT License
 */
 
 namespace Saturn;
@@ -18,20 +18,39 @@ require_once(__DIR__."/STSatellites.php");
 
 use \Exception as Exception;
 
+/**
+ * Saturn generator class. Provides methods to genereate posts, pages, index,
+ * and other needed html pages for the blog.
+ */
 class Generator
 {
+	/**
+	 * @var Engine $engine The Saturn engine instance used by the generator
+	 */
 	private $engine;
+	/**
+	 * @var callable[] $satellite satellites called when parsing posts
+	 */
 	private $satellites;
+	/**
+	 * @var string $out the output directory
+	 */
 	public $out;
+	/**
+	 * @var mixed[] $options the options of the blog
+	 */
 	public $options;
+	/**
+	 * @var string $templates the path to the templates directory
+	 */
 	public static $templates = "/templates/";
 
 	/**
-	** Constructor. Loads the options, creates an Engine instance, and
-	** registers the default satellites
-	**
-	** @return \London\Generator a new instance of Generator
-	*/
+	 * Constructor. Loads the options, creates an Engine instance, and
+	 * registers the default satellites
+	 *
+	 * @return Generator a new instance of Generator
+	 */
 	public function __construct()
 	{
 		require(__DIR__."/STOptions.php");
@@ -51,10 +70,10 @@ class Generator
 	}
 
 	/**
-	** Build the home page and dumps its html in the output folder
-	**
-	** @return void
-	*/
+	 * Build the home page and dumps its html in the output folder
+	 *
+	 * @return void
+	 */
 	public function generate_home()
 	{
 		$entries = $this->entries_list(SATURN_POST,$this->options["maxposts"]);
@@ -73,10 +92,10 @@ class Generator
 	}
 
 	/**
-	** Build every posts page and dump their html in the output folder
-	**
-	** @return void
-	*/
+	 * Build every posts page and dump their html in the output folder
+	 *
+	 * @return void
+	 */
 	public function generate_entries()
 	{
 		$posts = $this->entries_list(SATURN_POST);
@@ -90,10 +109,10 @@ class Generator
 	}
 
 	/**
-	** write the posts archive html page to the disk
-	**
-	** @return void
-	*/
+	 * write the posts archive html page to the disk
+	 *
+	 * @return void
+	 */
 	public function generate_archive()
 	{
 		$template = "archive";
@@ -117,10 +136,10 @@ class Generator
 	}
 
 	/**
-	** write the blog's rss file to the disk
-	**
-	** @return void
-	*/
+	 * write the blog's rss file to the disk
+	 *
+	 * @return void
+	 */
 	public function generate_rss()
 	{
 		$blog = $this->options;
@@ -134,10 +153,10 @@ class Generator
 	}
 
 	/**
-	** write the blog's sitemap to the disk
-	**
-	** @return void
-	*/
+	 * write the blog's sitemap to the disk
+	 *
+	 * @return void
+	 */
 	public function generate_sitemap()
 	{
 		$blog = $this->options;
@@ -153,10 +172,10 @@ class Generator
 	}
 
 	/**
-	** generate a JSON search index with all the posts
-	**
-	** @return void
-	*/
+	 * generate a JSON search index with all the posts
+	 *
+	 * @return void
+	 */
 	public function generate_search_index()
 	{
 		$posts = $this->entries_list(SATURN_POST);
@@ -178,11 +197,11 @@ class Generator
 	}
 
 	/**
-	** Writes a single entry's html page to the disk
-	**
-	** @param int $type the type (SATURN_PAGE|SATURN_POST) to write;
-	** @param hash $entry the entry array
-	*/
+	 * Writes a single entry's html page to the disk
+	 *
+	 * @param int $type the type (SATURN_PAGE|SATURN_POST) to write;
+	 * @param mixed[] $entry the entry array
+	 */
 	private function generate_entry($type, array $entry)
 	{
 		$blog = $this->options;
@@ -205,12 +224,12 @@ class Generator
 	}
 
 	/**
-	** Returns an array of posts, ran through every satellites
-	**
-	** @param int $type the type (SATURN_PAGE|SATURN_POST) of entries
-	** @param int $limit the optional limit of entries to return
-	** @return hash[] an list of entry arrays
-	*/
+	 * Returns an array of posts, ran through every satellites
+	 *
+	 * @param int $type the type (SATURN_PAGE|SATURN_POST) of entries
+	 * @param int $limit the optional limit of entries to return
+	 * @return array[] an list of entry arrays
+	 */
 	private function entries_list($type, $limit = null)
 	{
 		$entries = [];
@@ -232,36 +251,36 @@ class Generator
 	}
 
 	/**
-	** Add a satellite to be applied to posts while processing.
-	** satellites should take the entry type and hash as their only parameters,
-	** and return a modified entry hash
-	**
-	** @param callable $satellite takes an entry array and modifies it
-	** @return void
-	*/
+	 * Add a satellite to be applied to posts while processing.
+	 * satellites should take the entry type and array as their only parameters,
+	 * and return a modified entry array
+	 *
+	 * @param callable $satellite takes an entry array and modifies it
+	 * @return void
+	 */
 	public function register_satellite(callable $satellite)
 	{
 		array_push($this->satellites, $satellite);
 	}
 
 	/**
-	** Returns a list of add-on satellites (default satellites are not
-	** included)
-	**
-	** @return string[] a list of registered satellites
-	*/
+	 * Returns a list of add-on satellites (default satellites are not
+	 * included)
+	 *
+	 * @return string[] a list of registered satellites
+	 */
 	public function list_satellites()
 	{
 		return $this->satellites;
 	}
 
 	/**
-	** Applies all registered satellites to an entry and returns it
-	**
-	** @param int $type the type (SATURN_PAGE|SATURN_POST) of entries
-	** @param hash $entry the entry hash
-	** @return hash the satelliteed entry
-	*/
+	 * Applies all registered satellites to an entry and returns it
+	 *
+	 * @param int $type the type (SATURN_PAGE|SATURN_POST) of entries
+	 * @param mixed[] $entry the entry array
+	 * @return mixed[] the satelliteed entry
+	 */
 	private function apply_satellites($type, array $entry)
 	{
 		foreach($this->satellites as $satellite)
