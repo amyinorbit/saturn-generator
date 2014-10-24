@@ -26,21 +26,21 @@
     </header><!-- header#baner -->
 
     <section id="main-content">
-        
+
         <!-- index template
         loops through the posts
         -->
         <? if($template == "home"): ?>
             <? foreach($entries as $entry): ?>
                 <article class="entry">
-                    
+
                     <header class="entry-header">
                         <h1><a href="<?=$blog["url"].$entry["permalink"]; ?>"><?=$entry["title"]; ?></a></h1>
-                        <aside class="entry-meta">›&nbsp;<?=date("Y-m-d", $entry["date"]); ?> // <?=$entry["readingtime"]; ?>&nbsp;min read</aside>
+                        <aside class="entry-meta">›&nbsp;<?=date("Y-m-d H:i:s", $entry["date"]); ?> // <?=$entry["readingtime"]; ?>&nbsp;min read</aside>
                     </header><!-- header.entry-header -->
-                    
+
                     <article class="entry-content">
-                        
+
                         <? $parts = explode("<!--more-->", $entry["content"], 2); ?>
                         <?=$parts[0]; ?>
                         <? if(count($parts) > 1): ?>
@@ -49,30 +49,30 @@
                         </p>
                         <? endif; ?>
                     </article><!-- article.entry-content -->
-                    
+
                 </article><!-- article.entry -->
             <? endforeach; ?>
             <a id="to-archive" class="more-link" href="<?=$blog["url"]; ?>/archive/">Continue to archive</a>
         <? endif; ?>
-        
+
         <!-- post template
         lays out the current entry
         -->
         <? if($template == "post"): ?>
             <article class="entry">
-                
+
                 <header class="entry-header">
                     <h1><?=$entry["title"]; ?></h1>
                     <aside class="entry-meta">›&nbsp;<?=date("Y-m-d", $entry["date"]); ?> // <?=$entry["readingtime"]; ?>&nbsp;min read</aside>
                 </header><!-- header.entry-header -->
-                
+
                 <article class="entry-content">
                     <?=$entry["content"]; ?>
                 </article><!-- article.entry-content -->
-                
+
             </article><!-- article.entry -->
         <? endif; ?>
-        
+
         <!-- page template
         lays out the current static page
         -->
@@ -86,7 +86,7 @@
                 </article>
             </article>
         <? endif; ?>
-        
+
         <!-- archive template
         lays out the complete list of posts over the years
         -->
@@ -109,7 +109,7 @@
                 <? endforeach; ?>
             </section>
         <? endif; ?>
-            
+
     </section><!-- section#main-content -->
 </body>
 </html>
