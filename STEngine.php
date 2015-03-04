@@ -42,7 +42,7 @@ class Engine
 	public $version = "1.0.0a1";
 
 	/**
-	 * Contructor. Loads the options file
+	 * Constructor. Loads the options file
 	 *
 	 * @return Engine a new instance of the Engine class
 	 */

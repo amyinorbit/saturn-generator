@@ -245,7 +245,7 @@ class Generator
 			{
 				$entry = $this->engine->load_page($slug);
 			}
-			$entries[] = $this->apply_satellites($type, $entry);
+			array_push($entries, $this->apply_satellites($type, $entry));
 		}
 		return $entries;
 	}
