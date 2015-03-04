@@ -15,7 +15,7 @@ The code is also much cleaner than that of Asteroid, which suffered from two yea
 
 Saturn needs at least PHP 5.4 to run.
 
-Copy Saturn's directory wherever you need it (local computer, web server), fill in the fields in `STOptions.php`, and edit the templates to suit your taste. Calling or visiting `saturn.php` will trigger a re-generation of the blog. After the generation, you will have to copy any non-generated files (CSS, images) in the output directory.
+Copy Saturn's directory wherever you need it (local computer, web server), fill in the fields in `STOptions.php`, and edit the templates to suit your taste. Calling or visiting `saturn.php` will trigger a re-generation of the blog. Before any blog file is generated, any file and directory located in the `static` directory will be copied to the output.
 
 ## Posts and Pages
 

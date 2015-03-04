@@ -88,7 +88,7 @@ class Engine
 			$post["tags"] = [];
 		}
 		$post["lastmod"] = filemtime($filename);
-		$post["permalink"] = "/".$year."/".$month."/".$slug;
+		$post["permalink"] = "/post/".$slug;
 		return $post;
 	}
 
@@ -355,7 +355,7 @@ class Engine
 		}
 		if(($dir = opendir($path)) === false)
 		{
-			throw new Exception("Error while opening directory ".$dir);
+			throw new Exception("Error while opening directory ".$path);
 		}
 		while(($filename = readdir($dir)) !== false)
 		{
@@ -369,5 +369,43 @@ class Engine
 		closedir($dir);
 		rsort($files);
 		return ($limit === null)? $files : array_splice($files, 0, $limit);
+	}
+	
+	/**
+	 * Copy a folder to another one, thanks to @felix-kling on StackOverflow
+	 *		<http://stackoverflow.com/questions/2050859>
+	 *
+	 * @param string $src source folder
+	 * @param string $dst destination folder
+	 * @return void
+	 */
+	public static function recurse_copy($src, $dst)
+	{ 
+		$dir = opendir($src); 
+		if($dir === false)
+		{
+			throw new Exception("Error while opening directory ".$src);
+		}
+		@mkdir($dst); 
+		while(false !== ($file = readdir($dir)))
+		{ 
+			if(($file != '.') && ($file != '..'))
+			{ 
+				if(is_dir($src."/".$file))
+				{ 
+					self::recurse_copy($src."/".$file, $dst."/".$file); 
+				} 
+				else
+				{
+					if(!file_exists($dst."/".$file) ||
+						filemtime($src."/".$file) > filemtime($dst."/".$file))
+					{
+						copy($src."/".$file, $dst."/".$file);
+					}
+					
+				} 
+			} 
+		} 
+		closedir($dir); 
 	}
 }

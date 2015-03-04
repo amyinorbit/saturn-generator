@@ -195,6 +195,16 @@ class Generator
 			throw new Exception("Error writing to ".$this->out."/search.json.");
 		}
 	}
+	
+	/**
+	 * Copy any files in the "static" folder into the output
+	 *
+	 * @return void
+	 */
+	public function copy_static_files()
+	{
+		\Saturn\Engine::recurse_copy("static", "output");
+	}
 
 	/**
 	 * Writes a single entry's html page to the disk

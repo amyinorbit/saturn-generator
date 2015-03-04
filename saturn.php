@@ -24,6 +24,9 @@ $saturn->register_satellite("some_satellite");
 
 try
 {
+	echo "Copying static files...\t\t\t";
+	$saturn->copy_static_files();
+	echo "done\n";
 	echo "Generating home page...\t\t\t";
 	$saturn->generate_home();
 	echo "done\n";
