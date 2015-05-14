@@ -1,13 +1,13 @@
 # Saturn Blog Generator
 
-Version 1.0-alpha1 - Oct. 15th, 2014  
+Version 1.0-alpha4 - May. 14th, 2015  
 by César Parent \[<http://cesarparent.com>\]
 
 _A lightweight Markdown/static blog generator written in PHP._
 
 ## Why Saturn
 
-I started writing Saturn because I wanted a simpler, cleaner engine than [Asteroid](https://github.com/cesarparent/Asteroid/). Saturn does not have a bloated API, can generate a blog on a server or on a local computer, and can be extended with [satellites](#extension).
+I started writing Saturn because I wanted a simpler, cleaner engine than [Asteroid](https://github.com/cesarparent/Asteroid/). Saturn does not have a bloated API, can generate a blog on a server or on a local computer, and can be extended with [satellites](#extension). A simple REST API is provided in `/api` and allows applications to list, view details, create, edit and delete posts from a blog. It is _not_ mandatory for a Saturn instance to work.
 
 The code is also much cleaner than that of Asteroid, which suffered from two years of fiddling and adding on top of old, badly-written functions and classes.
 
@@ -16,6 +16,8 @@ The code is also much cleaner than that of Asteroid, which suffered from two yea
 Saturn needs at least PHP 5.4 to run.
 
 Copy Saturn's directory wherever you need it (local computer, web server), fill in the fields in `STOptions.php`, and edit the templates to suit your taste. Calling or visiting `saturn.php` will trigger a re-generation of the blog. Before any blog file is generated, any file and directory located in the `static` directory will be copied to the output.
+
+To use the REST API, it should be placed in a public part of the server. The includes at the top of each files should be changed to point to the Saturn backend installation.
 
 ## Posts and Pages
 
