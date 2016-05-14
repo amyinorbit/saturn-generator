@@ -51,13 +51,13 @@ class Generator
 	 *
 	 * @return Generator a new instance of Generator
 	 */
-	public function __construct()
+	public function __construct($out = null)
 	{
 		require(__DIR__."/STOptions.php");
 		$this->options = $options;
 		$this->engine = new \Saturn\Engine();
 		$this->satellites = [];
-		$this->out = __DIR__."/".$this->options["output_dir"];
+        $this->out = is_null($out) ? __DIR__."/".$this->options["output_dir"] : $out;
 		if(!is_dir($this->out))
 		{
 			mkdir($this->out, 0777, true);

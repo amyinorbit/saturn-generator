@@ -7,7 +7,10 @@
 
 require_once(__DIR__."/STGenerator.php");
 use \Saturn\Generator as Generator;
-$saturn = new Generator;
+
+$options = getopt("o:");
+$out = isset($options["o"]) ? $options["o"] : null;
+$saturn = new Generator($out);
 $satellites = $saturn->list_satellites();
 
 echo "\nSaturn Blog Generator v1.0\n";
