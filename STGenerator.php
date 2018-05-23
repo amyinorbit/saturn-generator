@@ -203,7 +203,7 @@ class Generator
 	 */
 	public function copy_static_files()
 	{
-		\Saturn\Engine::recurse_copy("static", "output");
+		\Saturn\Engine::recurse_copy(__DIR__."/static", $this->out);
 	}
 
 	/**
@@ -255,8 +255,18 @@ class Generator
 			{
 				$entry = $this->engine->load_page($slug);
 			}
+            if(isset($entry["publish"]) && $entry["publish"] === "false") { continue; }
 			array_push($entries, $this->apply_satellites($type, $entry));
 		}
+        usort($entries, function($a, $b) {
+            if($a["date"] > $b["date"]) {
+                return -1;
+            } else if($a["date"] < $b["date"]) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
 		return $entries;
 	}
 
