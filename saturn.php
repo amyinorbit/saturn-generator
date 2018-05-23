@@ -2,7 +2,7 @@
 /*
 ** saturn.php - Saturn main executable script
 ** Saturn - Simple PHP/Markdown blog generator
-** Created on 2014-08-08 by Cesar Parent <cesar@cesarparent.com>
+** Created on 2014-08-08 by Amy Parent <amy@amyparent.com>
 */
 
 require_once(__DIR__."/STGenerator.php");
@@ -14,7 +14,7 @@ $saturn = new Generator($out);
 $satellites = $saturn->list_satellites();
 
 echo "\nSaturn Blog Generator v1.0\n";
-echo "Written by Cesar Parent <http://cesarparent.com>\n---\n";
+echo "Written by Amy Parent <http://cesarparent.com>\n---\n";
 echo "Generating blog '".$saturn->options["title"]."'\n";
 echo "Output:\t'".$saturn->out."'\n\n";
 

@@ -2,7 +2,7 @@
 /**
  * LNDsatellites.php - Entry satellites
  * London - Simple PHP/Markdown blog generator
- * Created on 2014-08-07 by Cesar Parent <cesar@cesarparent.com>
+ * Created on 2014-08-07 by Amy Parent <amy@amyparent.com>
  *
  * This file contains the satellites that posts are passed through before
  * being output to the blog
@@ -14,8 +14,8 @@
  * at generation time
  *
  * @package Saturn
- * @author Cesar Parent <cesar@cesarparent.com>
- * @copyright Copyright (c) 2014, Cesar Parent
+ * @author Amy Parent <amy@amyparent.com>
+ * @copyright Copyright (c) 2014, Amy Parent
  * @version 1.0-alpha1
  * @license https://github.com/cesarparent/saturn-generator/blob/master/LICENSE MIT License
 */

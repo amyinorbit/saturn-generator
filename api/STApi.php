@@ -2,7 +2,7 @@
 /**
  * STApi.php — Saturn REST API server.
   * Extends RESTServer to provide REST endpoints for saturn blog servers.
- * Created on 2014-10-12 by Cesar Parent <cesar@cesarparent.com>
+ * Created on 2014-10-12 by Amy Parent <amy@amyparent.com>
  */
 namespace Saturn;
 

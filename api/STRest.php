@@ -2,7 +2,7 @@
 /**
  * STRest.php - Basic REST API class
  * Saturn API - Simple REST interface for Saturn blogs
- * Created on 2014-10-12 by Cesar Parent <cesar@cesarparent.com>
+ * Created on 2014-10-12 by Amy Parent <amy@amyparent.com>
  */
 
 namespace Saturn;

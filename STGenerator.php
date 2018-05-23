@@ -2,11 +2,11 @@
 /**
  * STGenerator.php - Generator main logic
  * Saturn - Simple PHP/Markdown blog generator
- * Created on 2014-08-05 by Cesar Parent <cesar@cesarparent.com>
+ * Created on 2014-08-05 by Amy Parent <amy@amyparent.com>
  *
  * @package Saturn
- * @author Cesar Parent <cesar@cesarparent.com>
- * @copyright Copyright (c) 2014, Cesar Parent
+ * @author Amy Parent <amy@amyparent.com>
+ * @copyright Copyright (c) 2014, Amy Parent
  * @version 1.0-alpha1
  * @license https://github.com/cesarparent/saturn-generator/blob/master/LICENSE MIT License
 */
